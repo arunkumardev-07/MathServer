@@ -1,5 +1,5 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:06/05/2025
+## Date:2/05/2025
 
 ## AIM:
  To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
@@ -32,73 +32,108 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 ## PROGRAM :
-```
 math.html
-
-<html lang="en">
+```
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lamp Filament Power Calculator</title>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<title>Area of Surface</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<style type="text/css">
+body {
+    background-color: #0dea32f2;
+}
+.edge {
+    width: 100%;
+    padding-top: 180px;
+    text-align: center;
+}
+.box {
+    display: inline-block;
+    border: thick dashed #ff0000;
+    width: 500px;
+    min-height: 300px;
+    font-size: 20px;
+    background-color: rgb(14, 1, 1);
+}
+.formelt {
+    color: black;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+h1 {
+    color: rgb(255, 62, 62);
+    padding-top: 20px;
+}
+</style>
 </head>
 <body>
-    <h1>Calculate Lamp Filament Power</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="intensity">Intensity (Amps):</label>
-        <input type="number" step="any" name="intensity" id="intensity" required><br><br>
-
-        <label for="resistance">Resistance (Ohms):</label>
-        <input type="number" step="any" name="resistance" id="resistance" required><br><br>
-
-        <button type="submit">Calculate Power</button>
-    </form>
-
-    {% if power is not None %}
-        <h2>Result</h2>
-        <p>Intensity (I): {{ intensity }} Amps</p>
-        <p>Resistance (R): {{ resistance }} Ohms</p>
-        <p><strong>Power (P): {{ power }} Watts</strong></p>
-    {% endif %}
+<div class="edge">
+    <div class="box">
+        <h1>Surface Area of Right Cylinder</h1>
+        <h3>jaswanth S (212223220037)</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="formelt">
+                Radius: <input type="text" name="radius" value="{{r}}"></input>m<br/>
+            </div>
+            <div class="formelt">
+                Height: <input type="text" name="height" value="{{h}}"></input>m<br/>
+            </div>
+            <div class="formelt">
+                <input type="submit" value="Calculate"></input><br/>
+            </div>
+            <div class="formelt">
+                Area: <input type="text" name="area" value="{{area}}">m<sup>2</sup><br/>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
- 
- views.py
-
- from django.shortcuts import render
-
-def calculate_power(request):
-    power = None
-    intensity = None
-    resistance = None
+```
+views.py
+```
+from django.shortcuts import render
+def surfacearea(request):
+    context = {}
+    context['area'] = "0"
+    context['r'] = "0"
+    context['h'] = "0"
     if request.method == 'POST':
-        try:
-            intensity = float(request.POST.get('intensity'))
-            resistance = float(request.POST.get('resistance'))
-            power = round((intensity ** 2) * resistance, 2)
-        except (TypeError, ValueError):
-            power = 'Invalid input.'
-    return render(request, 'mathapp/math.html', {'power': power, 'intensity': intensity, 'resistance': resistance})
-
-urls.py
-
+        print("POST method is used")
+        print('request.POST:', request.POST)
+        r = request.POST.get('radius', '0') 
+        h = request.POST.get('height', '0') 
+        print('radius =', r)
+        print('height =', h)
+        area = 2 * 3.14 * int(r) * int(h) + 2*3.14*int(r)*int(r)
+        context['area'] = area
+        context['r'] = r
+        context['h'] = h
+        print('Area =', area)
+    
+    return render(request, 'mathapp/math.html',context)
+```
+url.py
+```
 from django.contrib import admin
 from django.urls import path
 from mathapp import views
-
 urlpatterns = [
-    path('', views.calculate_power, name='calculate_power'),
+    path('admin/', admin.site.urls),
+    path('surfacearea/',views.surfacearea,name="surfacearea"),
+    path('',views.surfacearea,name="surfcaearea")
 ]
 ```
-
-
 ## SERVER SIDE PROCESSING:
-![Screenshot 2025-05-06 114448](https://github.com/user-attachments/assets/68999d4d-cbce-4281-8adc-635277cd462f)
-
+![sekjrve](https://github.com/user-attachments/assets/2cd256e7-ad02-4ab7-ac55-579624a25df5)
 
 
 ## HOMEPAGE:
-![Screenshot 2025-05-12 213802](https://github.com/user-attachments/assets/d8f315d6-ca76-48d0-88ad-613f62a8063a)
+![Screenshot 2025-05-13 133649](https://github.com/user-attachments/assets/2d0f3d81-be36-43d4-9687-e62856616f60)
 
 
 ## RESULT:
